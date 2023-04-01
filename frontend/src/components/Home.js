@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Modal } from "./Modal";
 import { Post } from "./Post";
-export const Home = () => {
+export const Home = ({userId}) => {
+  
   const [showOptions, setShowOptions] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(0);
+  const [title, setTitle] = useState()
+  const [postText, setPostText] = useState()
+
   const openModalFunc = (index) => {
     setIndex(index);
     setOpenModal(!openModal);
@@ -59,6 +63,12 @@ export const Home = () => {
       ],
     },
   ];
+
+  const handlePostSubmit = async () => {
+    const data = {title, postText, userId}
+    console.log(data);
+  }
+
   return (
     <div class="sm:ml-64">
       <section class="bg-white dark:bg-gray-900 py-8 lg:py-16">
@@ -71,15 +81,19 @@ export const Home = () => {
 
           <form class="mb-6 w-full relative">
             <Modal openModal={openModal} setOpenModal={setOpenModal} />
-            <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-              <label for="comment" class="sr-only">
-                Your comment
+
+            <input onChange={(e) => setTitle(e.target.value)} className="p-4 w-full h-12 text-sm rounded-lg rounded-t-lg border border-gray-200 text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800" placeholder="Title" />
+
+            <div class="py-2 px-4 mb-4 mt-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+              <label for="post" class="sr-only">
+                Your post
               </label>
               <textarea
-                id="comment"
+                id="post"
                 rows="6"
                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                 placeholder="Add a post ......"
+                onChange={(e) => setPostText(e.target.value)}
                 required></textarea>
             </div>
             <button

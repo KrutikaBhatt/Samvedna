@@ -2,7 +2,6 @@ import React from "react";
 import '../css/create_space.css';
 import { useState } from "react";
 
-
 export const CreateSpace = () => {
 
     const [file, setFile] = useState()
@@ -11,7 +10,7 @@ export const CreateSpace = () => {
 
     function handleChange(event) {
     
-       const reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = function (e) {
       setDisplayThumbNail(reader.result);
       setThumbNail(event.target.files[0]);
