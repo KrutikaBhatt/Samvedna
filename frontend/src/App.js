@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
+
 	const [userId, setUserId] = useState();
-  const [username, setUserName] = useState();
+  const [userName, setUserName] = useState();
 	const [walletAddress, setWalletAddress] = useState();
 	const [contract, setContract] = useState(null);
 	const [signer, setSigner] = useState(null);
@@ -30,7 +31,7 @@ function App() {
 		<div className="App">
 			<BrowserRouter>
 				<Routes>
-					<Route exact path="/" element={<Home userId={userId} />} />
+					<Route exact path="/" element={<Home userId={userId} userName={userName} />} />
 					<Route exact path="/create-space" element={<CreateSpace />} />
 					<Route exact path="/space" element={<Space />} />
 					<Route exact path="/sign-up" element={<Register setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />} />

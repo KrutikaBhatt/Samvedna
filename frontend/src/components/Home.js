@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { Post } from "./Post";
-export const Home = ({userId}) => {
+export const Home = ({userId, userName}) => {
   
   const [showOptions, setShowOptions] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -10,6 +10,7 @@ export const Home = ({userId}) => {
   const [title, setTitle] = useState('')
   const [postText, setPostText] = useState('')
   const [posts, setPosts] = useState([])
+  const [comment, setComment] = useState('')
 
   const openModalFunc = (index) => {
     setIndex(index);
@@ -77,6 +78,13 @@ export const Home = ({userId}) => {
     setPostText('')
   }
 
+  useEffect(() => {
+    axios.get("http://localhost:8080/post/getposts").then((res) => {
+      console.log(res.data);
+      setPosts(res.data)
+    })
+  }, [])
+
   return (
     <div class="sm:ml-64">
       <section class="bg-white dark:bg-gray-900 py-8 lg:py-16">
@@ -88,7 +96,7 @@ export const Home = ({userId}) => {
           </div>
 
           <form class="mb-6 w-full relative" onSubmit={handlePostSubmit} >
-            <Modal openModal={openModal} setOpenModal={setOpenModal} />
+            <Modal openModal={openModal} setOpenModal={setOpenModal} comment={comment} setComment={setComment} postId={posts[index]?.post_id} userId={userId} userName={userName} />
 
             <input onChange={(e) => setTitle(e.target.value)} value={title} className="p-4 w-full h-12 text-sm rounded-lg rounded-t-lg border border-gray-200 text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800" placeholder="Title" />
 
@@ -118,7 +126,7 @@ export const Home = ({userId}) => {
                 <Post
                   index={index}
                   onClick={openModalFunc}
-                  text={item.text}
+                  text={item.description}
                   author={item.author}
                   comments={item.comments}
                   showOptions={showOptions}
@@ -130,7 +138,7 @@ export const Home = ({userId}) => {
             })}
           </div>
 
-          <article class="p-6 mb-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+          {/* <article class="p-6 mb-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900">
             <footer class="flex justify-between items-center mb-2">
               <div class="flex items-center">
                 <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
@@ -305,7 +313,7 @@ export const Home = ({userId}) => {
                 Reply
               </button>
             </div>
-          </article>
+          </article> */}
         </div>
       </section>
     </div>
