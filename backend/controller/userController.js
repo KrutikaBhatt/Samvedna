@@ -5,31 +5,28 @@ const catchAsyncError=require('../middleware/catchAsyncError')
 
 
 exports.signup = catchAsyncError(async (req, res, next) => {
-    if (!req.body.fname) {
+    if (!req.body.username) {
         res.send({
             success: false,
-            message: "FirstName is required!",
+            message: "Username is required",
         });
     } else {
-        const { fname, lname, username, email, password } = req.body;
+        const { username, password, wallet_address } = req.body;
         const takenUsername = await User.findOne({ username });
-        const takenEmail = await User.findOne({ email });
 
-        if (takenUsername || takenEmail) {
+        if (takenUsername) {
             return res
                 .send({
                     success: false,
-                    message: "Username or email has already been taken"
+                    message: "Username has already been taken"
                 });
         } else {
             let hashedPassword = await bcrypt.hash(password, 10);
 
             const newUser = new User({
-                fname: fname,
-                lname: lname,
                 username: username,
-                email: email,
                 password: hashedPassword,
+                wallet_address: wallet_address
             });
             const savedUser = await newUser.save();
             res.send({
@@ -75,10 +72,8 @@ exports.login = catchAsyncError(async (req, res, next) => {
                             token: token,
                             user: {
                                 "id": dbUser._id,
-                                "email": dbUser.email,
                                 "username": dbUser.username,
-                                "fname": dbUser.fname,
-                                "lname": dbUser.lname
+                                "wallet_adress": dbUser.waller_address
                             },
                         });
                     }
