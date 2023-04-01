@@ -1,0 +1,33 @@
+.wrapper {
+  margin: 0 auto;
+  position: relative;
+  transform: scale(2);
+  width: 300px;
+}
+
+.emoji {
+  position: absolute;
+}
+
+.bar-graph {
+  fill: transparent;
+  stroke-dasharray: 1 800;
+  stroke-dashoffset: 0;
+  stroke-width: 20px;
+  stroke: #1F293799;
+}
+
+.info {
+  color: #ff6347;
+  font-family: "Roboto Condensed";
+  font-size: 22px;
+  letter-spacing: 8px;
+  line-height: 32px;
+  position: relative;
+}
+
+.wrapper .bar-graph {
+  stroke-dasharray: 1800;
+  stroke-dashoffset: 0;
+  stroke-width: 5px;
+}
