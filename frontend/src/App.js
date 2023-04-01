@@ -10,8 +10,9 @@ import axios from "axios";
 import { Mood } from "./components/Mood";
 
 function App() {
+
 	const [userId, setUserId] = useState();
-  const [username, setUserName] = useState();
+  const [userName, setUserName] = useState();
 	const [walletAddress, setWalletAddress] = useState();
 	const [contract, setContract] = useState(null);
 	const [signer, setSigner] = useState(null);
@@ -31,7 +32,7 @@ function App() {
 		<div className="App">
 			<BrowserRouter>
 				<Routes>
-					<Route exact path="/" element={<Home userId={userId} />} />
+					<Route exact path="/" element={<Home userId={userId} userName={userName} />} />
 					<Route exact path="/create-space" element={<CreateSpace />} />
 					<Route exact path="/space" element={<Space />} />
           <Route exact path="/mood" element={<Mood />} />

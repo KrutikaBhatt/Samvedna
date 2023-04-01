@@ -36,6 +36,7 @@ exports.getAllPostWithComment = async(req,res,next) => {
         const send_data = [];
 
         for(let i=0;i<posts.length;i++){
+            console.log(posts[i]);
             let author = await User.findOne({_id:posts[i].user});
             let comments = await Comment.find({post_id: posts[i]._id});
             send_data.push({

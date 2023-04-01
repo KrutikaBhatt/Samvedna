@@ -1,6 +1,22 @@
+import axios from "axios";
 import React, { useState } from "react";
 
-export const Modal = ({ openModal, setOpenModal }) => {
+export const Modal = ({ openModal, setOpenModal, comment, setComment, postId, userId, userName }) => {
+
+  const addComment = async () => {
+    console.log(comment);
+    const data = {
+      text: comment,
+      post_id: postId,
+      created_by: userId,
+      author: userName
+    }
+    console.log(data);
+    const res = await axios.post("http://localhost:8080/comment/createComment", data)
+    console.log(res.data);
+    setOpenModal(false)
+  }
+
   return (
     <div
       id="defaultModal"
@@ -42,6 +58,8 @@ export const Modal = ({ openModal, setOpenModal }) => {
               Your message
             </label>
             <textarea
+              onChange={(e) => setComment(e.target.value)}
+              value = {comment}
               id="message"
               rows="4"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -52,7 +70,7 @@ export const Modal = ({ openModal, setOpenModal }) => {
             <button
               data-modal-hide="defaultModal"
               type="button"
-              onClick={() => setOpenModal(false)}
+              onClick={addComment}
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Post
             </button>

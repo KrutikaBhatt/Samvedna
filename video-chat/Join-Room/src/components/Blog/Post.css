@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=MonteCarlo&display=swap");
+body {
+  color: rgb(94, 76, 76);
+  /* background-image: url("https://wallpapercave.com/wp/wp7392083.jpg"); */
+  background-repeat: repeat;
+  background-size: cover;
+}
+.post {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: 1000px;
+  height: 400px;
+  margin-top: 25px;
+}
+.font {
+  font-family: "MonteCarlo", cursive;
+}
+ul li {
+  list-style-type: none;
+  display: inline;
+}
+.photo {
+  height: 350px;
+  width: 425px;
+  border-radius: 50%;
+  display: ruby;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+.container {
+  max-width: 1000px;
+}
+
+/* Google Fonts */
+@import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
+
+/* Global */
+html {
+  min-height: max-content;
+  overflow: scroll;
+}
+body {
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Anonymous Pro", monospace;
+}
+.line-1 {
+  position: relative;
+  top: 50%;
+  width: 24em;
+  margin: 0 auto;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  font-size: large;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  transform: translateY(-50%);
+}
+
+/* Animation */
+.anim-typewriter {
+  animation: typewriter 4s steps(44) 1s 1 normal both,
+    blinkTextCursor 500ms steps(44) infinite normal;
+}
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 16em;
+  }
+}
+@keyframes blinkTextCursor {
+  from {
+    border-right-color: rgba(255, 255, 255, 0.75);
+  }
+  to {
+    border-right-color: transparent;
+  }
+}
+
+.post_title {
+  font-size: 1em;
+  text-align: left;
+  margin-top: 30px;
+  margin-left: 8%;
+}
+.post_button {
+  position: static;
+  display: inline-block;
+  margin-left: 20px;
+  align-items: center;
+}
+.buttons {
+  position: absolute;
+  display: flex;
+
+  bottom: 5;
+}
+.post_body {
+  margin: 5px;
+  white-space: pre-wrap;
+  text-align: left;
+  margin-left: 8%;
+}
+.post_list {
+  display: flex;
+  align-items: right;
+}
+.post_category {
+  text-align: center;
+}
+.post_datestamp {
+  text-align: left;
+  width: 200 px;
+  margin-left: 8%;
+}
+.post_datestamp1 {
+  text-align: right;
+  margin-top: 0;
+  margin-right: 8%;
+}
+.jumbotron {
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+}

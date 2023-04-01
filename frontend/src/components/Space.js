@@ -21,7 +21,6 @@ export const Space = () => {
   reader.readAsDataURL(event.target.files[0]);
     setFile(event.target.files[0])
   }
-
   return (
     <div className = 'ml-64'>
       <div className="background-top">
