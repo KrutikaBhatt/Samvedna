@@ -3,25 +3,7 @@ import '../css/create_space.css';
 import { useState } from "react";
 
 
-export const CreateSpace = () => {
-
-    const [file, setFile] = useState()
-    const [displayThumbnail, setDisplayThumbNail] = useState('')
-    const [thumbnail, setThumbNail] = useState('')
-
-    function handleChange(event) {
-    
-       const reader = new FileReader();
-      reader.onloadend = function (e) {
-      setDisplayThumbNail(reader.result);
-      setThumbNail(event.target.files[0]);
-    };
-
-    console.log(thumbnail)
-    console.log(displayThumbnail)
-    reader.readAsDataURL(event.target.files[0]);
-      setFile(event.target.files[0])
-    }
+export const Space = () => {
     
   return (
     <div className = 'ml-64'>
