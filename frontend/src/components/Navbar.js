@@ -22,6 +22,17 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
       console.log(accounts[0], typeof accounts[0]);
       setWalletAddress(accounts[0]);
       
+      window.ethereum.on("chainChanged", (chainId) => {
+				window.location.reload();
+			});
+			window.ethereum.on("accountsChanged", async function (accounts) {
+				setWalletAddress(accounts[0]);
+        setUserId(null)
+				// await initWeb3();
+			});
+			window.ethereum.on("disconnect", async function (accounts) {
+				setWalletAddress(null);
+			});
       
       const data = await axios.post("http://localhost:8080/user/login", {
         wallet_address: accounts[0]

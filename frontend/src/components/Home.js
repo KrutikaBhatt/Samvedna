@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Modal } from "./Modal";
 import { Post } from "./Post";
@@ -6,8 +7,9 @@ export const Home = ({userId}) => {
   const [showOptions, setShowOptions] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(0);
-  const [title, setTitle] = useState()
-  const [postText, setPostText] = useState()
+  const [title, setTitle] = useState('')
+  const [postText, setPostText] = useState('')
+  const [posts, setPosts] = useState([])
 
   const openModalFunc = (index) => {
     setIndex(index);
@@ -15,58 +17,64 @@ export const Home = ({userId}) => {
     console.log("This is the index that was clicked");
     console.log(index);
   };
-  const posts = [
-    {
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-      author: "Michael Gough",
-      created_at: "15/02/2022",
-      comments: [
-        {
-          text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-          author: "Jese Leos",
-          created_at: "15/02/2022",
-        },
-        {
-          text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-          author: "Jese Leos",
-          created_at: "15/02/2022",
-        },
-        {
-          text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-          author: "Jese Leos",
-          created_at: "15/02/2022",
-        },
-      ],
-    },
-    {
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-      author: "Michael Gough",
-      created_at: "15/02/2022",
-      comments: [
-        {
-          text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-          author: "Jese Leos",
-          created_at: "15/02/2022",
-        },
-      ],
-    },
-    {
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-      author: "Michael Gough",
-      created_at: "15/02/2022",
-      comments: [
-        {
-          text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-          author: "Jese Leos",
-          created_at: "15/02/2022",
-        },
-      ],
-    },
-  ];
 
-  const handlePostSubmit = async () => {
-    const data = {title, postText, userId}
+  // const posts = [
+  //   {
+  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+  //     author: "Michael Gough",
+  //     created_at: "15/02/2022",
+  //     comments: [
+  //       {
+  //         text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+  //         author: "Jese Leos",
+  //         created_at: "15/02/2022",
+  //       },
+  //       {
+  //         text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+  //         author: "Jese Leos",
+  //         created_at: "15/02/2022",
+  //       },
+  //       {
+  //         text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+  //         author: "Jese Leos",
+  //         created_at: "15/02/2022",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+  //     author: "Michael Gough",
+  //     created_at: "15/02/2022",
+  //     comments: [
+  //       {
+  //         text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+  //         author: "Jese Leos",
+  //         created_at: "15/02/2022",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+  //     author: "Michael Gough",
+  //     created_at: "15/02/2022",
+  //     comments: [
+  //       {
+  //         text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+  //         author: "Jese Leos",
+  //         created_at: "15/02/2022",
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  const handlePostSubmit = async (e) => {
+    e.preventDefault()
+    const data = {title, description: postText, user_id: userId}
     console.log(data);
+    const res = await axios.post("http://localhost:8080/post/createPost", data)
+    console.log(res.data);
+    setTitle('')
+    setPostText('')
   }
 
   return (
@@ -79,10 +87,10 @@ export const Home = ({userId}) => {
             </h2>
           </div>
 
-          <form class="mb-6 w-full relative">
+          <form class="mb-6 w-full relative" onSubmit={handlePostSubmit} >
             <Modal openModal={openModal} setOpenModal={setOpenModal} />
 
-            <input onChange={(e) => setTitle(e.target.value)} className="p-4 w-full h-12 text-sm rounded-lg rounded-t-lg border border-gray-200 text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800" placeholder="Title" />
+            <input onChange={(e) => setTitle(e.target.value)} value={title} className="p-4 w-full h-12 text-sm rounded-lg rounded-t-lg border border-gray-200 text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800" placeholder="Title" />
 
             <div class="py-2 px-4 mb-4 mt-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
               <label for="post" class="sr-only">
@@ -93,12 +101,14 @@ export const Home = ({userId}) => {
                 rows="6"
                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                 placeholder="Add a post ......"
+                value = {postText}
                 onChange={(e) => setPostText(e.target.value)}
                 required></textarea>
             </div>
             <button
+              disabled={!userId}
               type="submit"
-              class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block m-auto">
               Post
             </button>
           </form>

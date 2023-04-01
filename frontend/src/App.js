@@ -19,6 +19,13 @@ function App() {
     console.log("userid",userId);
 	}, [userId]);
 
+  useEffect(() => {
+    console.log("wallet", walletAddress);
+    if(!walletAddress){
+      setUserId(null)
+    }
+  }, [walletAddress])
+
 	return (
 		<div className="App">
 			<BrowserRouter>

@@ -27,12 +27,23 @@ export const Register = ({setWalletAddress, setUserName, setUserId}) => {
         }
         console.log(accounts[0], typeof accounts[0]);
         setWalletAddress(accounts[0]);
+
+        window.ethereum.on("chainChanged", (chainId) => {
+          window.location.reload();
+        });
+        window.ethereum.on("accountsChanged", async function (accounts) {
+          setWalletAddress(accounts[0]);
+          // await initWeb3();
+        });
+        window.ethereum.on("disconnect", async function (accounts) {
+          setWalletAddress(null);
+        });
         
         const data = await axios.post("http://localhost:8080/user/signup", {
           wallet_address: accounts[0],
           username: userNameInput
         })
-        
+
         console.log(data);
 
         if(data.data.success){
