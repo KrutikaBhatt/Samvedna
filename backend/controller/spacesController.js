@@ -1,7 +1,7 @@
 const Spaces = require("../models/spaces");
-const Spaces = require("../models/spaces");
 
 exports.create = async (req, res, next) => {
+    console.log(req.body)
   if (!req.body.title) {
     return res.send({
       success: false,
@@ -12,7 +12,7 @@ exports.create = async (req, res, next) => {
   if (!req.body.description) {
     return res.send({
       success: false,
-      message: "Please provide the user details",
+      message: "Please provide the description of post",
     });
   }
 
@@ -40,7 +40,6 @@ exports.create = async (req, res, next) => {
 exports.getAllSpaces = async (req, res, next) => {
   try {
     const spaces = await Spaces.find({});
-
     return res.send(spaces);
   } catch (err) {
     console.log(err);
