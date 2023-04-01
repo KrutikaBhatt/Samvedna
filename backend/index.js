@@ -36,7 +36,7 @@ app.use(errorMiddleWare)
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/comment',commentRouter);
-app.use('',spaceRouter);
+app.use('/space',spaceRouter);
 
 app.get('/', (req, res) => {
     res.send('HOME');
