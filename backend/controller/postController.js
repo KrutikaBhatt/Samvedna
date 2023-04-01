@@ -20,7 +20,8 @@ exports.createPost = async(req,res,next) => {
     const newPost = new Post({
         title: req.body.title,
         description: req.body.description,
-        user: req.body.user_id
+        user: req.body.user_id,
+        tag: req.body.tag
     });
     const savedPost = await newPost.save();
     res.send({
@@ -32,7 +33,7 @@ exports.createPost = async(req,res,next) => {
 
 exports.getAllPostWithComment = async(req,res,next) => {
     try{
-        const posts = await Post.find({});
+        const posts = await Post.find({}).sort('-createdAt');
         const send_data = [];
 
         for(let i=0;i<posts.length;i++){
@@ -43,6 +44,7 @@ exports.getAllPostWithComment = async(req,res,next) => {
                 post_id: posts[i]._id,
                 title: posts[i].title,
                 description: posts[i].description,
+                tag: posts[i].tag,
                 author:author.username,
                 created_at: posts[i].createdAt.toISOString().substring(0, 10),
                 comments: comments
