@@ -1,7 +1,7 @@
 {
-    "name": "bitlords-flipkart",
+    "name": "samvedna",
     "version": "1.0.0",
-    "description": "blockchain based warranty system for Ecommerce",
+    "description": "blockchain based interactive support group session",
     "main": "index.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",

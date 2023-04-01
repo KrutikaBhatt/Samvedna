@@ -7,7 +7,6 @@ const path = require('path');
 const errorMiddleWare = require('./middleware/error')
 const connectDB = require('./utils/connectdb')
 const dotenv=require('dotenv')
-
  
 dotenv.config({path:'.env'})
 connectDB()
