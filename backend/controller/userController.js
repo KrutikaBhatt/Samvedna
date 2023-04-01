@@ -39,8 +39,8 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 })
 
 exports.login = catchAsyncError(async (req, res, next) => {
-    const { email, password } = req.body;
-    User.findOne({ email }).then((dbUser) => {
+    const { username, password } = req.body;
+    User.findOne({ username }).then((dbUser) => {
         if (!dbUser) {
             return res.send({
                 success: false,
@@ -73,7 +73,7 @@ exports.login = catchAsyncError(async (req, res, next) => {
                             user: {
                                 "id": dbUser._id,
                                 "username": dbUser.username,
-                                "wallet_adress": dbUser.waller_address
+                                "wallet_adress": dbUser.wallet_address
                             },
                         });
                     }

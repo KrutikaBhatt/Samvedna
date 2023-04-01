@@ -14,6 +14,8 @@ connectDB()
 
 //Router imports
 const userRouter = require('./routes/userRoutes');
+const postRouter = require('./routes/postRoutes');
+const commentRouter = require('./routes/commentRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -31,6 +33,8 @@ app.use(errorMiddleWare)
 
 //Base Routes
 app.use('/user', userRouter);
+app.use('/post', postRouter);
+app.use('/comment',commentRouter);
 
 app.get('/', (req, res) => {
     res.send('HOME');
