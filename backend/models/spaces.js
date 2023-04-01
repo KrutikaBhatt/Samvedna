@@ -11,8 +11,15 @@ const SpacesSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    image_url : {
+        type: String,
+        required: true,
+        trim: true,
+    },
     created_by: {
-        type: String
+        type: String,
+        required : true,
+        trim : true,
     },
 }, {
     timestamps: true,

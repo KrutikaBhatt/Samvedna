@@ -4,13 +4,13 @@ import { useState } from "react";
 
 
 export const Space = () => {
+
   const [file, setFile] = useState()
   const [displayThumbnail, setDisplayThumbNail] = useState('')
   const [thumbnail, setThumbNail] = useState('')
-
-  function handleChange(event) {
   
-     const reader = new FileReader();
+  function handleChange(event) {
+    const reader = new FileReader();
     reader.onloadend = function (e) {
     setDisplayThumbNail(reader.result);
     setThumbNail(event.target.files[0]);

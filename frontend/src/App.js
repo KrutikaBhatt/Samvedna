@@ -5,26 +5,40 @@ import { CreateSpace } from "./components/CreateSpace";
 import { Space } from "./components/Space";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import JoinMeet  from './components/JoinMeet';
-import Video from './components/VideoChat';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path='/create-space' element={<CreateSpace />} />
-          <Route exact path='/space' element={<Space />} />
-          <Route exact path='/login' element={<Login />} />
-          <Route exact path='/sign-up' element={<Register />} />
-          <Route path ='/join' element ={<JoinMeet/>} />
-          <Route path ='/inspire/:url' element={<Video/>} />
-        </Routes>
-      </BrowserRouter>
-      <Navbar />  
-    </div>
-  );
+	const [userId, setUserId] = useState();
+  const [username, setUserName] = useState();
+	const [walletAddress, setWalletAddress] = useState();
+	const [contract, setContract] = useState(null);
+	const [signer, setSigner] = useState(null);
+	
+	useEffect(() => {
+    console.log("userid",userId);
+	}, [userId]);
+
+  useEffect(() => {
+    console.log("wallet", walletAddress);
+    if(!walletAddress){
+      setUserId(null)
+    }
+  }, [walletAddress])
+
+	return (
+		<div className="App">
+			<BrowserRouter>
+				<Routes>
+					<Route exact path="/" element={<Home userId={userId} />} />
+					<Route exact path="/create-space" element={<CreateSpace />} />
+					<Route exact path="/space" element={<Space />} />
+					<Route exact path="/sign-up" element={<Register setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />} />
+				</Routes>
+			</BrowserRouter>
+			<Navbar userId={userId} setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />
+		</div>
+	);
 }
 
 export default App;
