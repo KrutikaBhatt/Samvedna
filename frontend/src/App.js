@@ -7,6 +7,7 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Mood } from "./components/Mood";
 
 function App() {
 	const [userId, setUserId] = useState();
@@ -33,6 +34,7 @@ function App() {
 					<Route exact path="/" element={<Home userId={userId} />} />
 					<Route exact path="/create-space" element={<CreateSpace />} />
 					<Route exact path="/space" element={<Space />} />
+          <Route exact path="/mood" element={<Mood />} />
 					<Route exact path="/sign-up" element={<Register setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />} />
 				</Routes>
 			</BrowserRouter>
