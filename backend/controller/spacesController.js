@@ -26,7 +26,7 @@ exports.create = async (req, res, next) => {
   const newSpace = new Spaces({
     title: req.body.title,
     description: req.body.description,
-    user: req.body.user_id,
+    created_by: req.body.user_id,
     image_url: req.body.image_url,
   });
   const savedSpace = await newSpace.save();
@@ -66,6 +66,24 @@ exports.getSpace = async (req, res, next) => {
       });
     }
   };
+
+
+  exports.getMySpaces = async (req, res, next) => {
+    try {
+      const spaces = await Spaces.find({
+        created_by : req.params.id
+      });
+  
+      return res.send(spaces);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send({
+        status: false,
+        message: "Error while fetching posts",
+      });
+    }
+  };
+  
   
 
 

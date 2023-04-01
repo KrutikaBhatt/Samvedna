@@ -17,7 +17,9 @@ const SpacesSchema = new mongoose.Schema({
         trim: true,
     },
     created_by: {
-        type: String
+        type: String,
+        required : true,
+        trim : true,
     },
 }, {
     timestamps: true,
