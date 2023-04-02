@@ -10,8 +10,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 			success: false,
 			message: "Username is required",
 		});
-	} 
-    else if (!req.body.wallet_address) {
+	} else if (!req.body.wallet_address) {
 		res.send({
 			success: false,
 			message: "Wallet address is required",
@@ -19,21 +18,19 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 	} else {
 		const { username, wallet_address } = req.body;
 		const takenUsername = await User.findOne({ username });
-        const takenWalletAddress = await User.findOne({ wallet_address });
+		const takenWalletAddress = await User.findOne({ wallet_address });
 
 		if (takenUsername) {
 			return res.send({
 				success: false,
 				message: "Username has already been taken",
 			});
-		} 
-        else if (takenWalletAddress) {
+		} else if (takenWalletAddress) {
 			return res.send({
 				success: false,
 				message: "Wallet addresss has already been taken",
 			});
-		} 
-        else {
+		} else {
 			const newUser = new User({
 				username: username,
 				wallet_address: wallet_address.toLowerCase(),
@@ -51,8 +48,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 exports.login = catchAsyncError(async (req, res, next) => {
 	const { wallet_address } = req.body;
 	console.log(wallet_address);
-	User.findOne({ 'wallet_address': wallet_address
-     }).then((dbUser) => {
+	User.findOne({ wallet_address: wallet_address }).then((dbUser) => {
 		console.log("user", dbUser);
 		if (!dbUser) {
 			return res.send({
@@ -85,6 +81,8 @@ exports.login = catchAsyncError(async (req, res, next) => {
 						id: dbUser._id,
 						username: dbUser.username,
 						wallet_adress: dbUser.wallet_address,
+						is_moderator: dbUser.is_moderator,
+						is_therapist: dbUser.is_therapist,
 					},
 				});
 			}
@@ -128,6 +126,47 @@ exports.logout = catchAsyncError(async (req, res, next) => {
 		return res.send({
 			success: true,
 			message: "User Logged Out Successfully!",
+		});
+	}
+});
+
+exports.addModerator = catchAsyncError(async (req, res, next) => {
+	console.log(req.body);
+	const { username, wallet_address } = req.body;
+	console.log(username);
+	try {
+		const user = await User.findOne({ username });
+		console.log(user, user.is_moderator);
+		if (user.is_moderator) {
+			const updatedUser = await User.findOneAndUpdate(
+				{ wallet_address },
+				{ is_moderator: true },
+				{ new: true }
+			);
+			console.log(updatedUser);
+			if (updatedUser) {
+				return res.send({
+					success: true,
+					message: "User added as moderator",
+				});
+			}
+            else {
+                return res.send({
+                    success: false,
+                    message: "Invalid wallet address",
+                });
+            }
+		} else {
+			return res.send({
+				success: false,
+				message: "Only moderator can add",
+			});
+		}
+	} catch (e) {
+		console.log(e);
+		return res.send({
+			success: false,
+			message: "Error: " + e,
 		});
 	}
 });

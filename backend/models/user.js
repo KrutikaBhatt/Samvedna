@@ -11,6 +11,14 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    is_therapist: {
+        type: Boolean,
+        default: false
+    },
+    is_moderator: {
+        type: Boolean,
+        default: false
+    },
     spaces :[{
         type: String,
     }]
