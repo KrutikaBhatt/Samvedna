@@ -5,14 +5,13 @@ import qs from "qs";
 import { Modal } from "./Modal";
 import { Post } from "./Post";
 import Tag from "./Tag";
-export const Home = ({ userId, userName }) => {
-	const [showOptions, setShowOptions] = useState(false);
+export const Home = ({ userId, userName, isModerator, isTherapist }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [index, setIndex] = useState(0);
 	const [title, setTitle] = useState("");
 	const [postText, setPostText] = useState("");
 	const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([])
+	const [filteredPosts, setFilteredPosts] = useState([]);
 	const [comment, setComment] = useState("");
 	const [reloadPost, setReloadPost] = useState(false);
 	const [addTag, setAddTag] = useState(false);
@@ -102,24 +101,24 @@ export const Home = ({ userId, userName }) => {
 		axios.get("http://localhost:8080/post/getposts").then((res) => {
 			console.log(res.data);
 			setPosts(res.data);
-      setFilteredPosts(res.data)
+			setFilteredPosts(res.data);
 		});
 	}, [reloadPost]);
 
-  useEffect(() => {
-    if(selectedTags.length == 0){
-      console.log("no tag");
-      setFilteredPosts(posts)
-    } else {
-      setFilteredPosts(posts.filter((post) => selectedTags.includes(post.tag)))
-      console.log(filteredPosts);
-    }
-  }, [selectedTags])
+	useEffect(() => {
+		if (selectedTags.length == 0) {
+			console.log("no tag");
+			setFilteredPosts(posts);
+		} else {
+			setFilteredPosts(posts.filter((post) => selectedTags.includes(post.tag)));
+			console.log(filteredPosts);
+		}
+	}, [selectedTags]);
 
 	return (
 		<div class="sm:ml-64">
 			<section class="bg-white dark:bg-gray-900 py-8 lg:py-16">
-				<div class="max-w-2xl mx-auto px-4">
+				<div class="max-w-2xl mx-auto px-4 min-h-[100vh]">
 					<div class="flex justify-between items-center mb-6">
 						<h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
 							Add Post
@@ -167,8 +166,21 @@ export const Home = ({ userId, userName }) => {
 						</button>
 					</form>
 					<div>
+						<span
+							onClick={(e) => setAddTag(true)}
+							class="bg-gray-100 text-gray-800 text-sm font-semibold inline-flex items-center py-1 px-2 rounded-lg mr-2 dark:bg-gray-700 dark:text-gray-300"
+						>
+							Add tags
+						</span>
 						{selectedTags.map((tag, i) => {
-							return <Tag tag={tag} key={i} setSelectedTags={setSelectedTags} selectedTags={selectedTags} />;
+							return (
+								<Tag
+									tag={tag}
+									key={i}
+									setSelectedTags={setSelectedTags}
+									selectedTags={selectedTags}
+								/>
+							);
 						})}
 						{!addTag ? (
 							<>
@@ -182,13 +194,16 @@ export const Home = ({ userId, userName }) => {
 						) : (
 							<>
 								<span class="inline-flex items-center p-1 text-sm font-medium text-gray-800 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300">
-									<select onChange={(e) => {
-                    console.log('change', selectedTags);
-                    setSelectedTags([...selectedTags, e.target.value])
-                    setAddTag(false)
-                  }} className="inline-flex w-32 items-center text-sm font-medium text-gray-800 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300">
+									<select
+										onChange={(e) => {
+											console.log("change", selectedTags);
+											setSelectedTags([...selectedTags, e.target.value]);
+											setAddTag(false);
+										}}
+										className="inline-flex w-32 items-center text-sm font-medium text-gray-800 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300"
+									>
 										<option>Select an option</option>
-                    {tags.map((tag, i) => {
+										{tags.map((tag, i) => {
 											if (!selectedTags.includes(tag)) {
 												return <option key={i}>{tag}</option>;
 											}
@@ -207,11 +222,14 @@ export const Home = ({ userId, userName }) => {
 									text={item.description}
 									author={item.author}
 									comments={item.comments}
+                  postId={item.post_id}
 									tag={item.tag}
-									showOptions={showOptions}
-									setShowOptions={setShowOptions}
 									openModal={openModal}
 									setOpenModal={setOpenModal}
+                  isModerator={isModerator}
+                  userName={userName}
+                  setReloadPost={setReloadPost}
+                  key={item.post_id}
 								/>
 							);
 						})}

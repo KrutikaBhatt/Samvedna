@@ -8,3 +8,5 @@ frontend/package-lock.json
 venv
 _pycache_
 /_pycache_
+predict_illness/wiki-news-300d-1M.vec
+

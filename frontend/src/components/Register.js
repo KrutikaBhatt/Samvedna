@@ -60,7 +60,7 @@ export const Register = ({setWalletAddress, setUserName, setUserId}) => {
     <div className="ml-64">
       <div className="background-top-login">
         <div>
-          <input className="input-login"
+          <input className="!w-80 rounded-lg "
             type="text"
             placeholder="Enter a unique username"
             name="title"
@@ -69,7 +69,7 @@ export const Register = ({setWalletAddress, setUserName, setUserId}) => {
             required
           />
         </div>
-        <button className="button-login" onClick={register} > SIGN UP</button>
+        <button className="button-login !text-3xl" onClick={register} > SIGN UP</button>
       </div>
     </div>
   );

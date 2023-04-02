@@ -1,22 +1,40 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Comments } from "./Comments";
 import { Modal } from "./Modal";
+import Delete from "../images/Delete.js"
 
 export const Post = ({
-	showOptions,
-	setShowOptions,
-	setOpenModal,
-	openModal,
 	text,
 	author,
 	comments,
 	index,
 	onClick,
 	tag,
+	isModerator,
+	postId,
+	userName,
+	setReloadPost,
 }) => {
+  
 	const [hideComments, setHideComments] = useState(false);
+	const [showOptions, setShowOptions] = useState(false);
+
+	const deletePost = async () => {
+		const res = await axios.post("http://localhost:8080/post/deletePost", {
+			post_id: postId,
+			username: userName,
+		});
+		console.log(res);
+		setReloadPost((reload) => !reload);
+	};
+
+  useEffect(() => {
+    console.log(index);
+  }, [showOptions])
+
 	return (
-		<>
+		<div key={postId}>
 			<article
 				class={`p-6 mb-6 ${
 					index !== 0 && "border-t"
@@ -39,49 +57,16 @@ export const Post = ({
 								</time>
 							</p>
 						</div>
-						<div className="mr-2 inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white dark:bg-gray-800 py-1 px-2 rounded-lg" >
-							<p>{tag}</p>
+						<div className="">
+							<p className="mr-2 inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white dark:bg-gray-800 py-1 px-2 rounded-lg" >{tag}</p>
+              { isModerator &&
+                <button
+                onClick={deletePost}
+                className="mr-2 inline-flex items-center mr-3 text-sm text-white bg-red-700 hover:bg-red-600 py-1 px-2 rounded-lg" >Delete</button>
+              }
 						</div>
 					</div>
-					<button
-						onClick={() => setShowOptions(!showOptions)}
-						id="dropdownComment1Button"
-						data-dropdown-toggle="dropdownComment1"
-						class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-						type="button"
-					>
-						<svg
-							class="w-5 h-5"
-							aria-hidden="true"
-							fill="currentColor"
-							viewBox="0 0 20 20"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
-						</svg>
-						<span class="sr-only">Comment settings</span>
-					</button>
-
-					<div
-						id="dropdownComment1"
-						class={` ${
-							!showOptions && "hidden"
-						} absolute right-[-120px] top-0 w-36 bg-white rounded  divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600`}
-					>
-						<ul
-							class="py-1 text-sm text-gray-700 dark:text-gray-200"
-							aria-labelledby="dropdownMenuIconHorizontalButton"
-						>
-							<li>
-								<a
-									href="#"
-									class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-								>
-									Related to me
-								</a>
-							</li>
-						</ul>
-					</div>
+          
 				</footer>
 
 				<p class="text-gray-500 dark:text-gray-400">{text}</p>
@@ -133,6 +118,6 @@ export const Post = ({
 					Hide comments
 				</button>
 			)}
-		</>
+		</div>
 	);
 };
