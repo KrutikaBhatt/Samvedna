@@ -6,8 +6,13 @@ import { TopSection } from "./TopSection";
 import { Modal } from "./Modal";
 import { Post } from "./Post";
 import Tag from "./Tag";
-
-export const Home = ({ userId, userName, contract }) => {
+export const Home = ({
+  userId,
+  userName,
+  isModerator,
+  isTherapist,
+  contract,
+}) => {
   const [showOptions, setShowOptions] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [index, setIndex] = useState(0);
@@ -191,6 +196,11 @@ export const Home = ({ userId, userName, contract }) => {
             </button>
           </form>
           <div>
+            <span
+              onClick={(e) => setAddTag(true)}
+              class="bg-gray-100 text-gray-800 text-sm font-semibold inline-flex items-center py-1 px-2 rounded-lg mr-2 dark:bg-gray-700 dark:text-gray-300">
+              Add tags
+            </span>
             {selectedTags.map((tag, i) => {
               return (
                 <Tag
@@ -239,11 +249,16 @@ export const Home = ({ userId, userName, contract }) => {
                   text={item.description}
                   author={item.author}
                   comments={item.comments}
-                  tag={item.tag}
                   showOptions={showOptions}
                   setShowOptions={setShowOptions}
+                  postId={item.post_id}
+                  tag={item.tag}
                   openModal={openModal}
                   setOpenModal={setOpenModal}
+                  isModerator={isModerator}
+                  userName={userName}
+                  setReloadPost={setReloadPost}
+                  key={item.post_id}
                 />
               );
             })}

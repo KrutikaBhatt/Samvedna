@@ -22,6 +22,19 @@ const UserSchema = new mongoose.Schema({
       ref: "Rewards",
     },
   ],
+  is_therapist: {
+    type: Boolean,
+    default: false,
+  },
+  is_moderator: {
+    type: Boolean,
+    default: false,
+  },
+  spaces: [
+    {
+      type: String,
+    },
+  ],
 });
 
 const User = mongoose.model("User", UserSchema);

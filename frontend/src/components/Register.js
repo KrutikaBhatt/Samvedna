@@ -90,7 +90,7 @@ export const Register = ({
             required
           />
         </div>
-        <button className="button-login" onClick={register}>
+        <button className="button-login !text-3xl" onClick={register}>
           {" "}
           SIGN UP
         </button>

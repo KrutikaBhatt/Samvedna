@@ -7,6 +7,7 @@ frontend/package-lock.json
 */node_modules
 venv
 _pycache_
+<<<<<<< HEAD
 /_pycache_
 node_modules
 .env
@@ -19,3 +20,8 @@ typechain-types
 cache
 artifacts
 
+=======
+/_pycache_
+predict_illness/wiki-news-300d-1M.vec
+
+>>>>>>> 45f691f7e4c0368ec2c2cc88bfc2e67c14843fcf

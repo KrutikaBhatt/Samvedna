@@ -3,14 +3,13 @@ import { Home } from "./components/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CreateSpace } from "./components/CreateSpace";
 import { Space } from "./components/Space";
-import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { MyLogs } from "./components/MyLogs";
 import { Progress } from "./components/Progress";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Mood } from "./components/Mood";
-import { Rewards } from "./components/Rewards";
+import AddModerator from "./components/AddModerator";
 
 function App() {
   const [userId, setUserId] = useState();
@@ -18,6 +17,8 @@ function App() {
   const [walletAddress, setWalletAddress] = useState();
   const [contract, setContract] = useState(null);
   const [signer, setSigner] = useState(null);
+  const [isModerator, setIsModerator] = useState(false);
+  const [isTherapist, setIsTherapist] = useState(false);
 
   useEffect(() => {
     console.log("userid", userId);
@@ -36,23 +37,22 @@ function App() {
         <Routes>
           <Route
             exact
-            path="/rewards"
+            path="/"
             element={
-              <Rewards
-                contract={contract}
-                account={walletAddress}
+              <Home
                 userId={userId}
+                userName={userName}
+                isModerator={isModerator}
+                isTherapist={isTherapist}
               />
             }
           />
+          <Route exact path="/create-space" element={<CreateSpace />} />
           <Route
             exact
-            path="/"
-            element={
-              <Home userId={userId} userName={userName} contract={contract} />
-            }
+            path="/add-moderator"
+            element={<AddModerator userName={userName} />}
           />
-          <Route exact path="/create-space" element={<CreateSpace />} />
           <Route exact path="/space" element={<Space />} />
           <Route exact path="/mood" element={<Mood />} />
           <Route
@@ -63,7 +63,6 @@ function App() {
                 setUserId={setUserId}
                 setWalletAddress={setWalletAddress}
                 setUserName={setUserName}
-                setContract={setContract}
               />
             }
           />
@@ -86,13 +85,16 @@ function App() {
             }
           />
         </Routes>
-
         <Navbar
           userId={userId}
           setUserId={setUserId}
           setWalletAddress={setWalletAddress}
           setUserName={setUserName}
+          isModerator={isModerator}
+          setIsModerator={setIsModerator}
+          isTherapist={isTherapist}
           setContract={setContract}
+          setIsTherapist={setIsTherapist}
         />
       </BrowserRouter>
     </div>

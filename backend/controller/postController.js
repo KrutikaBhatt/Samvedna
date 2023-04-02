@@ -65,3 +65,22 @@ exports.getAllPostWithComment = async (req, res, next) => {
     });
   }
 };
+
+exports.deletePost = async (req, res, next) => {
+  console.log(req.body);
+  const { username, post_id } = req.body;
+  const user = await User.findOne({ username });
+  if (user?.is_moderator) {
+    const post = await Post.deleteOne({ post_id });
+    console.log(post);
+    return res.send({
+      success: true,
+      message: "Post deleted",
+    });
+  } else {
+    return res.send({
+      success: false,
+      message: "Only moderator can delete",
+    });
+  }
+};

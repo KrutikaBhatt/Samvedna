@@ -11,5 +11,7 @@ router.get("/currentUser", auth, userController.currentUser);
 router.get("/logout", auth, userController.logout);
 router.post("/getRewards", userController.getReward);
 router.post("/deleteReward", userController.deleteReward);
+router.post("/addModerator", userController.addModerator);
+router.get("/currentUser", auth, userController.currentUser);
 
 module.exports = router;
