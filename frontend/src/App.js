@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CreateSpace } from "./components/CreateSpace";
 import { Space } from "./components/Space";
 import { Register } from "./components/Register";
+import { MyLogs } from "./components/MyLogs";
+import { Progress } from "./components/Progress";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Mood } from "./components/Mood";
@@ -53,6 +55,8 @@ function App() {
 							/>
 						}
 					/>
+					<Route exact path="/my-logs" element={<MyLogs setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />} />
+					<Route exact path="/progress" element={<Progress setUserId={setUserId} setUserName={setUserName} />} />
 				</Routes>
 				<Navbar
 					userId={userId}
