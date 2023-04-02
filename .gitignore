@@ -8,3 +8,14 @@ frontend/package-lock.json
 venv
 _pycache_
 /_pycache_
+node_modules
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+
