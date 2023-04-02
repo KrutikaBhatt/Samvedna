@@ -37,7 +37,7 @@ function App() {
 					<Route exact path="/" element={<Home userId={userId} userName={userName} />} />
 					<Route exact path="/create-space" element={<CreateSpace />} />
 					<Route exact path="/space" element={<Space />} />
-          <Route exact path="/mood" element={<Mood />} />
+          			<Route exact path="/mood" element={<Mood />} />
 					<Route exact path="/sign-up" element={<Register setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />} />
 					<Route exact path="/my-logs" element={<MyLogs setUserId={setUserId} setWalletAddress={setWalletAddress} setUserName={setUserName} />} />
 					<Route exact path="/progress" element={<Progress setUserId={setUserId} setUserName={setUserName} />} />
