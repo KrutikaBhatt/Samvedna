@@ -89,7 +89,7 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
             </li>
             <li>
               <a
-                href="#"
+                href="/my-logs"
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <svg
                   aria-hidden="true"
@@ -126,7 +126,7 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
             </li>
             <li>
               <a
-                href={`/space/get-my-space/userID`}
+                href={`/my-spaces`}
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <svg
                   aria-hidden="true"
