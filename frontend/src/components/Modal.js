@@ -1,21 +1,40 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-export const Modal = ({ openModal, setOpenModal, comment, setComment, postId, userId, userName }) => {
-
+export const Modal = ({
+  openModal,
+  setOpenModal,
+  comment,
+  setComment,
+  postId,
+  userId,
+  userName,
+}) => {
   const addComment = async () => {
     console.log(comment);
     const data = {
       text: comment,
       post_id: postId,
       created_by: userId,
-      author: userName
-    }
-    console.log(data);
-    const res = await axios.post("http://localhost:8080/comment/createComment", data)
+      author: userName,
+    };
+    const count_data = {
+      author: userName,
+    };
+    console.log(count_data);
+    const resCount = await axios.post(
+      "http://localhost:8080/comment/getCommentByAuthor",
+      count_data
+    );
+    console.log("this is the res count");
+    console.log(resCount);
+    const res = await axios.post(
+      "http://localhost:8080/comment/createComment",
+      data
+    );
     console.log(res.data);
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   return (
     <div
@@ -59,7 +78,7 @@ export const Modal = ({ openModal, setOpenModal, comment, setComment, postId, us
             </label>
             <textarea
               onChange={(e) => setComment(e.target.value)}
-              value = {comment}
+              value={comment}
               id="message"
               rows="4"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

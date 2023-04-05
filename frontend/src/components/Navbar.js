@@ -1,47 +1,77 @@
 import React from "react";
-import axios from "axios"
+import axios from "axios";
+import MarketplaceAbi from "../artifacts/contracts/samvedna.sol/samvedna.json";
+import MarketplaceAddress from "../contractAddress.json";
+import { ethers } from "ethers";
+import { Link } from "react-router-dom";
 
-export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
+export const Navbar = ({
+  setUserId,
+  setUserName,
+  setWalletAddress,
+  userId,
+  isModerator,
+  setIsModerator,
+  isTherapist,
+  setIsTherapist,
+  setContract,
+}) => {
   const login = async () => {
     if (window.ethereum) {
       var accounts;
-			try {
-				accounts = await Promise.race([
-					window.ethereum.request({
-						method: "eth_requestAccounts",
-					}), // the original promise
-					new Promise(
-						(_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000) // timeout after 5 seconds
-					),
-				]);
+      try {
+        accounts = await Promise.race([
+          window.ethereum.request({
+            method: "eth_requestAccounts",
+          }), // the original promise
+          new Promise(
+            (_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000) // timeout after 5 seconds
+          ),
+        ]);
         console.log("rec");
-			} catch (e) {
-				console.log(e);
-				return;
-			}
+      } catch (e) {
+        console.log(e);
+      }
       console.log(accounts[0], typeof accounts[0]);
       setWalletAddress(accounts[0]);
-      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      await loadContract(signer);
       window.ethereum.on("chainChanged", (chainId) => {
-				window.location.reload();
-			});
-			window.ethereum.on("accountsChanged", async function (accounts) {
-				setWalletAddress(accounts[0]);
-        setUserId(null)
-				// await initWeb3();
-			});
-			window.ethereum.on("disconnect", async function (accounts) {
-				setWalletAddress(null);
-			});
-      
+        window.location.reload();
+      });
+      window.ethereum.on("accountsChanged", async function (accounts) {
+        setWalletAddress(accounts[0]);
+        setUserId(null);
+        // await initWeb3();
+      });
+      window.ethereum.on("disconnect", async function (accounts) {
+        setWalletAddress(null);
+      });
+
       const data = await axios.post("http://localhost:8080/user/login", {
-        wallet_address: accounts[0]
-      })
+        wallet_address: accounts[0],
+      });
       console.log(data);
-      setUserId(data.data.user.id)
-      setUserName(data.data.user.username)
+      setUserId(data.data.user.id);
+      setUserName(data.data.user.username);
+      setIsModerator(data.data.user.is_moderator);
+      setIsTherapist(data.data.user.is_therapist);
     }
-  }
+  };
+
+  const loadContract = async (signer) => {
+    console.log(MarketplaceAbi);
+    console.log(MarketplaceAddress);
+    const marketplace = new ethers.Contract(
+      MarketplaceAddress.address,
+      MarketplaceAbi.abi,
+      signer
+    );
+    console.log("this is the contract");
+    console.log(marketplace);
+    setContract(marketplace);
+  };
 
   return (
     <div>
@@ -72,8 +102,8 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul class="space-y-2 font-medium">
             <li>
-              <a
-                href="/"
+              <Link
+                to="/"
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <svg
                   aria-hidden="true"
@@ -84,8 +114,8 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
                   <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                   <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                 </svg>
-                <span class="ml-3">Home</span>
-              </a>
+                <span class="ml-3">Dashboard</span>
+              </Link>
             </li>
             <li>
               <a
@@ -97,13 +127,34 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="flex-1 ml-3 whitespace-nowrap">Users</span>
+              </a>
+            </li>
+            <li>
+              <Link
+                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                to="/create-space">
+                <svg
+                  aria-hidden="true"
+                  class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+                    clip-rule="evenodd"></path>
                 </svg>
                 <span class="flex-1 ml-3 whitespace-nowrap">My Daily Logs</span>
                 <span class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">
                   10
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
               <a
@@ -136,34 +187,18 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
                   xmlns="http://www.w3.org/2000/svg">
                   <path
                     fill-rule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clip-rule="evenodd"></path>
-                </svg>
-                <span class="flex-1 ml-3 whitespace-nowrap">My Spaces</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/create-space"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                <svg
-                  aria-hidden="true"
-                  class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fill-rule="evenodd"
                     d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
                     clip-rule="evenodd"></path>
                 </svg>
-                <span class="flex-1 ml-3 whitespace-nowrap">Create your space</span>
+                <span class="flex-1 ml-3 whitespace-nowrap">
+                  Create your space
+                </span>
               </a>
             </li>
-            {!userId && 
-            <><li>
-                <button
-                  onClick={login}
+            {isModerator && (
+              <li>
+                <Link
+                  to="/add-moderator"
                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                   <svg
                     aria-hidden="true"
@@ -173,14 +208,38 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                       fill-rule="evenodd"
-                      d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                      d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
                       clip-rule="evenodd"></path>
                   </svg>
-                  <span class="flex-1 ml-3 whitespace-nowrap">Sign In</span>
-                </button>
-              </li><li>
-                  <a
-                    href="/sign-up"
+                  <span class="flex-1 ml-3 whitespace-nowrap">
+                    Add Moderator
+                  </span>
+                </Link>
+              </li>
+            )}
+            {!userId && (
+              <>
+                <li>
+                  <button
+                    onClick={login}
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg
+                      aria-hidden="true"
+                      class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                        clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Sign In</span>
+                  </button>
+                </li>
+                <li>
+                  <Link
+                    to="/sign-up"
                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                     <svg
                       aria-hidden="true"
@@ -194,8 +253,10 @@ export const Navbar = ({setUserId, setUserName, setWalletAddress, userId}) => {
                         clip-rule="evenodd"></path>
                     </svg>
                     <span class="flex-1 ml-3 whitespace-nowrap">Sign Up</span>
-                  </a>
-                </li></>}
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </aside>
